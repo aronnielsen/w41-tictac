@@ -13,3 +13,23 @@ and open the template in the editor.
     -fx-background-repeat: stretch;   
     -fx-background-position: center;
 }
+
+.tictac-button {
+    -fx-background-color: rgba(255, 255, 255, 0.75);
+    -fx-font-size: 60px;
+    -fx-font-weight: bold;
+    -fx-cursor: pointer;
+}
+
+.tictac-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 1);
+}
+
+.new-game-button {
+    -fx-background-color: rgba(255, 255, 255, 0.75);
+    -fx-font-size: 14px;
+}
+
+.new-game-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 1);
+}

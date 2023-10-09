@@ -58,6 +58,12 @@ public class TicTacViewController implements Initializable
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
 
+                if (player == 0) {
+                    btn.setStyle("-fx-background-color: rgba(255, 0, 0, 0.5);");
+                } else {
+                    btn.setStyle("-fx-background-color: rgba(0, 0, 255, 0.5);");
+                }
+
                 if (game.isGameOver())
                 {
                     System.out.println("Game over");
@@ -120,6 +126,7 @@ public class TicTacViewController implements Initializable
         for(Node n : gridPane.getChildren())
         {
             Button btn = (Button) n;
+            btn.setStyle("");
             btn.setText("");
         }
     }
