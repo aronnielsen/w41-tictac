@@ -15,10 +15,11 @@ public class GameBoard implements IGameModel
 {
     private int currentPlayer = 0;
     private String[][] gameBoardArray = new String[3][3];
+    private boolean isGameOver = false;
     /**
      * Returns 0 for player 0, 1 for player 1.
      *
-     * @return int Id of the next player.
+     * @return int id of the next player.
      */
     public int getNextPlayer()
     {
@@ -28,7 +29,7 @@ public class GameBoard implements IGameModel
 
     /**
      * Attempts to let the current player play at the given coordinates. It the
-     * attempt is succesfull the current player has ended his turn and it is the
+     * attempt is successful the current player has ended his turn, and it is the
      * next players turn.
      *
      * @param col column to place a marker in.
@@ -49,8 +50,10 @@ public class GameBoard implements IGameModel
                 gameBoardArray[row][col] = "O";
             }
 
-            if (isGameOver()) {
-                return true;
+            int winCheck = getWinner();
+
+            if (winCheck > -2) {
+                isGameOver = true;
             }
 
             getNextPlayer();
@@ -63,29 +66,29 @@ public class GameBoard implements IGameModel
 
     public boolean isGameOver()
     {
-        return getWinner() > -2;
+        return isGameOver;
     }
 
     /**
-     * Gets the id of the winner, -1 if its a draw.
+     * Gets the id of the winner, -1 if it's a draw.
      *
-     * @return int id of winner, or -1 if draw.
+     * @return int id of winner, or -1 if it's a draw.
      */
     public int getWinner()
     {
+        if (checkDiagonals() > -1) {
+            return checkDiagonals();
+        }
+
         for (int i = 0; i < 3; i++) {
-            int rowCheck = checkRow(i);
-            int colCheck = checkCol(i);
+            int rowCheck = checkRowOrColumn(i, true);
+            int colCheck = checkRowOrColumn(i, false);
 
             if (rowCheck != -1) {
                 return rowCheck;
             } else if (colCheck != -1) {
                 return colCheck;
             }
-        }
-
-        if (checkDiagonals() > -1) {
-            return checkDiagonals();
         }
 
         if (!checkIfMovesLeft()) {
@@ -124,28 +127,16 @@ public class GameBoard implements IGameModel
         return -1;
     }
 
-    private int checkRow(int row) {
+    private int checkRowOrColumn(int index, boolean row) {
         String symbol = "";
 
         for (int i = 0; i < 3; i++) {
-            if (Objects.equals(gameBoardArray[row][i], null) || (!Objects.equals(symbol, "") && !Objects.equals(symbol, gameBoardArray[row][i]))) {
+            String item = (row) ? gameBoardArray[index][i] : gameBoardArray[i][index];
+
+            if (Objects.equals(item, null) || (!Objects.equals(symbol, "") && !Objects.equals(symbol, item))) {
                 return -1;
             } else {
-                symbol = gameBoardArray[row][i];
-            }
-        }
-
-        return (symbol.equals("X")) ? 0 : 1;
-    }
-
-    private int checkCol(int col) {
-        String symbol = "";
-
-        for (int i = 0; i < 3; i++) {
-            if (Objects.equals(gameBoardArray[i][col], null) || (!Objects.equals(symbol, "") && !Objects.equals(symbol, gameBoardArray[i][col]))) {
-                return -1;
-            } else {
-                symbol = gameBoardArray[i][col];
+                symbol = item;
             }
         }
 
@@ -159,5 +150,6 @@ public class GameBoard implements IGameModel
     {
         gameBoardArray = new String[3][3];
         currentPlayer = 0;
+        isGameOver = false;
     }
 }

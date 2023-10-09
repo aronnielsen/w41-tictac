@@ -39,7 +39,6 @@ public class TicTacViewController implements Initializable
     @FXML
     private void handleButtonAction(ActionEvent event)
     {
-        System.out.println("Handling Button");
         try
         {
             Integer row = GridPane.getRowIndex((Node) event.getSource());
@@ -52,8 +51,6 @@ public class TicTacViewController implements Initializable
 
             if (game.play(c, r))
             {
-                System.out.println("Play ");
-
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
@@ -66,14 +63,11 @@ public class TicTacViewController implements Initializable
 
                 if (game.isGameOver())
                 {
-                    System.out.println("Game over");
                     int winner = game.getWinner();
                     displayWinner(winner);
                 }
                 else
                 {
-                    System.out.println("Play action");
-
                     setPlayer();
                 }
             }
@@ -96,7 +90,6 @@ public class TicTacViewController implements Initializable
     {
         game = new GameBoard();
         setPlayer();
-        System.out.println("Game init");
     }
 
     private void setPlayer()
