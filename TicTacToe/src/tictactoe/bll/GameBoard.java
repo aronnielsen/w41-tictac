@@ -156,5 +156,6 @@ public class GameBoard implements IGameModel
         gameBoardArray = new String[3][3];
         currentPlayer = 0;
         isGameOver = false;
+        winner = -2;
     }
 }
