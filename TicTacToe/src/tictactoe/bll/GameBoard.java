@@ -42,7 +42,6 @@ public class GameBoard implements IGameModel
             return false;
         }
 
-        System.out.println(gameBoardArray[row][col]);
         if (Objects.equals(gameBoardArray[row][col], null)) {
             if (currentPlayer == 0) {
                 gameBoardArray[row][col] = "X";
@@ -64,11 +63,7 @@ public class GameBoard implements IGameModel
 
     public boolean isGameOver()
     {
-        if (getWinner() > -2) {
-            return true;
-        }
-
-        return false;
+        return getWinner() > -2;
     }
 
     /**
@@ -79,11 +74,13 @@ public class GameBoard implements IGameModel
     public int getWinner()
     {
         for (int i = 0; i < 3; i++) {
-            System.out.println(checkRow(i));
-            if (checkRow(i) != -1) {
-                return checkRow(i);
-            } else if (checkCol(i) != -1) {
-                return checkCol(i);
+            int rowCheck = checkRow(i);
+            int colCheck = checkCol(i);
+
+            if (rowCheck != -1) {
+                return rowCheck;
+            } else if (colCheck != -1) {
+                return colCheck;
             }
         }
 
@@ -111,16 +108,17 @@ public class GameBoard implements IGameModel
     }
 
     private int checkDiagonals() {
+        String first = gameBoardArray[0][0];
         String center = gameBoardArray[1][1];
 
         if (Objects.equals(center, null)) {
             return -1;
         }
 
-        if (Objects.equals(gameBoardArray[0][0], center) && Objects.equals(center, gameBoardArray[2][2])) {
-            return (gameBoardArray[0][0].equals("X")) ? 0 : 1;
+        if (Objects.equals(first, center) && Objects.equals(center, gameBoardArray[2][2])) {
+            return (first.equals("X")) ? 0 : 1;
         } else if (Objects.equals(gameBoardArray[0][2], center) && Objects.equals(center, gameBoardArray[2][0])) {
-            return (gameBoardArray[0][0].equals("X")) ? 0 : 1;
+            return (first.equals("X")) ? 0 : 1;
         }
 
         return -1;
