@@ -64,7 +64,7 @@ public class GameBoard implements IGameModel
 
     public boolean isGameOver()
     {
-        if (getWinner() > -1) {
+        if (getWinner() > -2) {
             return true;
         }
 
@@ -91,17 +91,35 @@ public class GameBoard implements IGameModel
             return checkDiagonals();
         }
 
-        return -1;
-    }
-
-    private int checkDiagonals() {
-        if (Objects.equals(gameBoardArray[1][1], null)) {
+        if (!checkIfMovesLeft()) {
             return -1;
         }
 
-        if (Objects.equals(gameBoardArray[0][0], gameBoardArray[1][1]) && Objects.equals(gameBoardArray[1][1], gameBoardArray[2][2])) {
+        return -2;
+    }
+
+    private boolean checkIfMovesLeft() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameBoardArray[i][j] == null) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private int checkDiagonals() {
+        String center = gameBoardArray[1][1];
+
+        if (Objects.equals(center, null)) {
+            return -1;
+        }
+
+        if (Objects.equals(gameBoardArray[0][0], center) && Objects.equals(center, gameBoardArray[2][2])) {
             return (gameBoardArray[0][0].equals("X")) ? 0 : 1;
-        } else if (Objects.equals(gameBoardArray[0][2], gameBoardArray[1][1]) && Objects.equals(gameBoardArray[1][1], gameBoardArray[2][0])) {
+        } else if (Objects.equals(gameBoardArray[0][2], center) && Objects.equals(center, gameBoardArray[2][0])) {
             return (gameBoardArray[0][0].equals("X")) ? 0 : 1;
         }
 
@@ -141,9 +159,7 @@ public class GameBoard implements IGameModel
      */
     public void newGame()
     {
-        //TODO Implement this method
         gameBoardArray = new String[3][3];
         currentPlayer = 0;
     }
-
 }
