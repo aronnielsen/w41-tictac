@@ -16,6 +16,7 @@ public class GameBoard implements IGameModel
     private int currentPlayer = 0;
     private String[][] gameBoardArray = new String[3][3];
     private boolean isGameOver = false;
+    private int winner = -1;
     /**
      * Returns 0 for player 0, 1 for player 1.
      *
@@ -50,9 +51,9 @@ public class GameBoard implements IGameModel
                 gameBoardArray[row][col] = "O";
             }
 
-            int winCheck = getWinner();
+            winner = checkIfWinner();
 
-            if (winCheck > -2) {
+            if (winner > -2) {
                 isGameOver = true;
             }
 
@@ -64,18 +65,7 @@ public class GameBoard implements IGameModel
         }
     }
 
-    public boolean isGameOver()
-    {
-        return isGameOver;
-    }
-
-    /**
-     * Gets the id of the winner, -1 if it's a draw.
-     *
-     * @return int id of winner, or -1 if it's a draw.
-     */
-    public int getWinner()
-    {
+    private int checkIfWinner() {
         if (checkDiagonals() > -1) {
             return checkDiagonals();
         }
@@ -96,6 +86,21 @@ public class GameBoard implements IGameModel
         }
 
         return -2;
+    }
+
+    public boolean isGameOver()
+    {
+        return isGameOver;
+    }
+
+    /**
+     * Gets the id of the winner, -1 if it's a draw.
+     *
+     * @return int id of winner, or -1 if it's a draw.
+     */
+    public int getWinner()
+    {
+        return winner;
     }
 
     private boolean checkIfMovesLeft() {

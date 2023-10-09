@@ -28,9 +28,6 @@ public class TicTacViewController implements Initializable
     private Label lblPlayer;
 
     @FXML
-    private Button btnNewGame;
-
-    @FXML
     private GridPane gridPane;
     
     private static final String TXT_PLAYER = "Player: ";
@@ -47,19 +44,14 @@ public class TicTacViewController implements Initializable
             int c = (col == null) ? 0 : col;
             int player = game.getNextPlayer();
 
-
-
             if (game.play(c, r))
             {
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
 
-                if (player == 0) {
-                    btn.setStyle("-fx-background-color: rgba(255, 0, 0, 0.5);");
-                } else {
-                    btn.setStyle("-fx-background-color: rgba(0, 0, 255, 0.5);");
-                }
+                String bckColor = (player == 0) ? "rgba(255, 0, 0, 0.5)" : "rgba(0, 0, 255, 0.5)";
+                btn.setStyle("-fx-background-color:" + bckColor + " ;");
 
                 if (game.isGameOver())
                 {
@@ -78,7 +70,7 @@ public class TicTacViewController implements Initializable
     }
 
     @FXML
-    private void handleNewGame(ActionEvent event)
+    private void handleNewGame()
     {
         game.newGame();
         setPlayer();
@@ -100,17 +92,8 @@ public class TicTacViewController implements Initializable
 
     private void displayWinner(int winner)
     {
-        String message = "";
         String player = (winner == 0) ? "X" : "O";
-        switch (winner)
-        {
-            case -1:
-                message = "It's a draw :-(";
-                break;
-            default:
-                message = "Player " + player + " wins!!!";
-                break;
-        }
+        String message = (winner == -1) ? "It's a draw :-(" : "Player " + player + " wins!!!";
         lblPlayer.setText(message);
     }
 
@@ -123,5 +106,4 @@ public class TicTacViewController implements Initializable
             btn.setText("");
         }
     }
-
 }

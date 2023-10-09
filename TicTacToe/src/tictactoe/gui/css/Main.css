@@ -10,7 +10,7 @@ and open the template in the editor.
 
 #pane {
     -fx-background-image: url(../images/background.jpg);
-    -fx-background-repeat: stretch;   
+    -fx-background-repeat: stretch;
     -fx-background-position: center;
 }
 
