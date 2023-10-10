@@ -40,7 +40,6 @@ public class GameBoard implements IGameModel
      */
     public boolean play(int col, int row)
     {
-        System.out.println(isGameOver());
         if (Objects.equals(gameBoardArray[row][col], null) && !isGameOver()) {
             if (currentPlayer == 0) {
                 gameBoardArray[row][col] = "X";
@@ -56,7 +55,7 @@ public class GameBoard implements IGameModel
 
             getNextPlayer();
 
-            printBoardToConsole();
+            //printBoardToConsole();
 
             return true;
         } else {
@@ -64,6 +63,13 @@ public class GameBoard implements IGameModel
         }
     }
 
+    /**
+        Checks the rows, columns and diagonals, and checks if any symbol has a complete line.
+        @return 0 if X has a line and is the winner
+                1 if O has a line and is the winner
+               -1 if no one has a line and there are no moves left resulting in a draw
+               -2 if no one has a line and there are still moves left
+    */
     private int checkIfWinner() {
         if (checkDiagonals() > -1) {
             return checkDiagonals();
@@ -96,6 +102,11 @@ public class GameBoard implements IGameModel
         return winner;
     }
 
+    /**
+     * Loops through the multidimensional array that stores the game state
+     * and checks if there are any null/empty spots left
+     * @return true if there is a null/empty spot left in the multidimensional array, otherwise false
+     */
     private boolean checkIfMovesLeft() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -108,6 +119,12 @@ public class GameBoard implements IGameModel
         return false;
     }
 
+    /**
+     * Checks both diagonals 'manually' to see if a diagonal has the same symbol in the whole diagonal
+     * @return -1 if no symbol has a complete diagonal
+     *          0 if X has a complete diagonal
+     *          1 if O has a complte diagonal
+     */
     private int checkDiagonals() {
         String first = gameBoardArray[0][0];
         String third = gameBoardArray[0][2];
@@ -127,6 +144,14 @@ public class GameBoard implements IGameModel
         return -1;
     }
 
+    /**
+     * Loops through the given row/column and checks if a symbol covers the entire row/column
+     * @param index index of the row/column to check
+     * @param row is it checking a row or not
+     * @return -1 if no symbol has a complete line
+     *          0 if X has a complete line
+     *          1 if O has a complete line
+     */
     private int checkRowOrColumn(int index, boolean row) {
         String symbol = "";
 
@@ -154,6 +179,9 @@ public class GameBoard implements IGameModel
         winner = -2;
     }
 
+    /**
+     * A debug method to print the game-board to the console
+     */
     private void printBoardToConsole() {
         for (int i = 0; i < 3; i++) {
             String line = "";
