@@ -40,11 +40,8 @@ public class GameBoard implements IGameModel
      */
     public boolean play(int col, int row)
     {
-        if (isGameOver()) {
-            return false;
-        }
-
-        if (Objects.equals(gameBoardArray[row][col], null)) {
+        System.out.println(isGameOver());
+        if (Objects.equals(gameBoardArray[row][col], null) && !isGameOver()) {
             if (currentPlayer == 0) {
                 gameBoardArray[row][col] = "X";
             } else {
@@ -58,6 +55,8 @@ public class GameBoard implements IGameModel
             }
 
             getNextPlayer();
+
+            printBoardToConsole();
 
             return true;
         } else {
@@ -92,12 +91,6 @@ public class GameBoard implements IGameModel
     {
         return isGameOver;
     }
-
-    /**
-     * Gets the id of the winner, -1 if it's a draw.
-     *
-     * @return int id of winner, or -1 if it's a draw.
-     */
     public int getWinner()
     {
         return winner;
@@ -117,16 +110,18 @@ public class GameBoard implements IGameModel
 
     private int checkDiagonals() {
         String first = gameBoardArray[0][0];
+        String third = gameBoardArray[0][2];
         String center = gameBoardArray[1][1];
+
 
         if (Objects.equals(center, null)) {
             return -1;
         }
 
         if (Objects.equals(first, center) && Objects.equals(center, gameBoardArray[2][2])) {
-            return (first.equals("X")) ? 0 : 1;
-        } else if (Objects.equals(gameBoardArray[0][2], center) && Objects.equals(center, gameBoardArray[2][0])) {
-            return (first.equals("X")) ? 0 : 1;
+            return (Objects.equals(first, "X")) ? 0 : 1;
+        } else if (Objects.equals(third, center) && Objects.equals(center, gameBoardArray[2][0])) {
+            return (Objects.equals(third, "X")) ? 0 : 1;
         }
 
         return -1;
@@ -157,5 +152,16 @@ public class GameBoard implements IGameModel
         currentPlayer = 0;
         isGameOver = false;
         winner = -2;
+    }
+
+    private void printBoardToConsole() {
+        for (int i = 0; i < 3; i++) {
+            String line = "";
+            for (int j = 0; j < 3; j++) {
+                String element = gameBoardArray[i][j];
+                line += (element == null) ? "- " : gameBoardArray[i][j] + " ";
+            }
+            System.out.println(line);
+        }
     }
 }
