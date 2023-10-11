@@ -16,7 +16,7 @@ public class GameBoard implements IGameModel
     private int currentPlayer = 0;
     private String[][] gameBoardArray = new String[3][3];
     private boolean isGameOver = false;
-    private int winner = -1;
+    private int winner = -2;
     /**
      * Returns 0 for player 0, 1 for player 1.
      *
@@ -41,20 +41,10 @@ public class GameBoard implements IGameModel
     public boolean play(int col, int row)
     {
         if (Objects.equals(gameBoardArray[row][col], null) && !isGameOver()) {
-            if (currentPlayer == 0) {
-                gameBoardArray[row][col] = "X";
-            } else {
-                gameBoardArray[row][col] = "O";
-            }
-
+            gameBoardArray[row][col] = (currentPlayer == 0) ? "X" : "O";
             winner = checkIfWinner();
-
-            if (winner > -2) {
-                isGameOver = true;
-            }
-
+            isGameOver = (winner > -2);
             getNextPlayer();
-
             //printBoardToConsole();
 
             return true;
@@ -71,8 +61,10 @@ public class GameBoard implements IGameModel
                -2 if no one has a line and there are still moves left
     */
     private int checkIfWinner() {
-        if (checkDiagonals() > -1) {
-            return checkDiagonals();
+        int diagonalCheck = checkDiagonals();
+
+        if (diagonalCheck > -1) {
+            return diagonalCheck;
         }
 
         for (int i = 0; i < 3; i++) {
@@ -123,13 +115,12 @@ public class GameBoard implements IGameModel
      * Checks both diagonals 'manually' to see if a diagonal has the same symbol in the whole diagonal
      * @return -1 if no symbol has a complete diagonal
      *          0 if X has a complete diagonal
-     *          1 if O has a complte diagonal
+     *          1 if O has a complete diagonal
      */
     private int checkDiagonals() {
         String first = gameBoardArray[0][0];
         String third = gameBoardArray[0][2];
         String center = gameBoardArray[1][1];
-
 
         if (Objects.equals(center, null)) {
             return -1;
@@ -180,14 +171,15 @@ public class GameBoard implements IGameModel
     }
 
     /**
-     * A debug method to print the game-board to the console
+     * A simple debug method to print the game-board to the console.
+     * Left in even though it is not used, since this is a school project.
      */
     private void printBoardToConsole() {
         for (int i = 0; i < 3; i++) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (int j = 0; j < 3; j++) {
                 String element = gameBoardArray[i][j];
-                line += (element == null) ? "- " : gameBoardArray[i][j] + " ";
+                line.append((element == null) ? "- " : gameBoardArray[i][j] + " ");
             }
             System.out.println(line);
         }
